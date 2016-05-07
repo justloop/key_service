@@ -1,0 +1,36 @@
+# Routes
+# This file defines all application routes (Higher priority routes first)
+# ~~~~
+
+# TEST PAGE
+GET         /test                       controllers.Application.test
+
+# AUTHENTICATION
+POST		/signin						controllers.Auth.signIn
+POST		/signout					controllers.Auth.signOut
+POST		/signup						controllers.Auth.signUp
+
+# ACCOUNT
+GET         /account/list               controllers.Account.list
+GET			/account					controllers.Account.info
+PUT			/account					controllers.Account.update
+PUT			/account/password		    controllers.Account.updatePassword
+DELETE	    /account					controllers.Account.delete
+
+# TOKEN
+GET         /token                      controllers.TokenManage.listToken
+PUT			/token			            controllers.TokenManage.createToken
+DELETE      /token                      controllers.TokenManage.deleteToken
+
+
+# KEY
+GET         /key                        controllers.KeyController.list
+GET		    /key/:id				    controllers.KeyController.info(id: Long)
+POST	    /key/:id					controllers.KeyController.update(id: Long)
+PUT		    /key				        controllers.KeyController.insert
+DELETE	    /key/:id				    controllers.KeyController.delete(id: Long)
+
+# Map static resources from the /public folder to the /assets URL path
+GET         /assets/*file               controllers.Assets.at(path="/public", file)
+
+    
