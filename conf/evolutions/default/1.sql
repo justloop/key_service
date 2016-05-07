@@ -4,7 +4,7 @@
 CREATE TABLE skeys (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   key VARCHAR(255) NOT NULL,
-  inserttime date NOT NULL
+  inserttime DATETIME NOT NULL
 );
 
 CREATE TABLE apikeys (
@@ -18,13 +18,13 @@ CREATE TABLE apitokens (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
   token VARCHAR(255) NOT NULL,
   apikey VARCHAR(255) NOT NULL,
-  expirationtime date NOT NULL,
+  expirationtime DATETIME NOT NULL,
   userid INTEGER NOT NULL DEFAULT 0
 );
 
 CREATE TABLE apilogs (
   id INTEGER PRIMARY KEY AUTO_INCREMENT,
-  dateinsert DATE NOT NULL,
+  dateinsert DATETIME NOT NULL,
   ip VARCHAR(255) NOT NULL,
   apikey VARCHAR(255),
   token VARCHAR(255),

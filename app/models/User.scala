@@ -1,7 +1,7 @@
 package models
 
 import org.joda.time.DateTime
-
+import anorm.JodaParameterMetaData._
 import scala.concurrent.Future
 
 case class User(

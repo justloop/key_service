@@ -75,11 +75,7 @@ trait ApiController extends Controller with I18nSupport {
   // User Aware Api Action that requires authentication. It checks the Request has the correct X-Auth-Token heaader
   private def UserAwareApiActionWithParser[A](parser: BodyParser[A])(action: UserAwareApiRequest[A] => Future[ApiResult]) = ApiActionCommon(parser) { (apiRequest, apiKey, date) =>
     apiRequest.tokenOpt match {
-      case None => ApiKey.isActive(apiKey).flatMap {
-        case None => errorApiKeyUnknown
-        case Some(false) => errorApiKeyDisabled
-        case Some(true) => action(UserAwareApiRequest(apiRequest.request, apiKey, date, None, None))
-      }
+      case None => errorTokenNotFound
       case Some(token) => ApiToken.findByTokenAndApiKey(token, apiKey).flatMap {
         case None => errorTokenUnknown
         case Some(apiToken) if apiToken.isExpired => {

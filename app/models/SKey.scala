@@ -1,7 +1,7 @@
 package models
 
 import org.joda.time.DateTime
-
+import anorm.JodaParameterMetaData._
 import scala.concurrent.Future
 
 /**
@@ -27,7 +27,7 @@ object SKey {
 
   def insert(key: String): Future[Long] = Future.successful {
     val result: Option[Long] = DB.withConnection { implicit c =>
-      SQL("INSERT INTO skeys(key,inserttime) VALUES({key},{inserttime})").on('key -> key, 'inserttime -> ((new DateTime())).toDate).executeInsert()
+      SQL("INSERT INTO skeys(key,inserttime) VALUES({key},{inserttime})").on('key -> key, 'inserttime -> DateTime.now).executeInsert()
     }
     result.get
   }
@@ -48,4 +48,15 @@ object SKey {
     }
   }
 
+  def getTop: Future[Option[SKey]] = Future.successful {
+    DB.withConnection { implicit c =>
+      SQL("select * from skeys where id = (SELECT MAX(id) from apikeys)").as(parser.singleOpt)
+    }
+  }
+
+  def getKey(date: DateTime): Future[Option[SKey]] = Future.successful {
+    DB.withConnection { implicit c =>
+      SQL("select * from skeys where inserttime < {date} order by inserttime desc limit 1").on('date -> date).as(parser.singleOpt)
+    }
+  }
 }

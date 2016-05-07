@@ -3,6 +3,7 @@ package models
 import api.ApiRequestHeader
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import anorm.JodaParameterMetaData._
 import play.api.libs.json._
 import play.api.mvc.RequestHeader
 
@@ -44,7 +45,7 @@ object ApiLog {
 
   def insert[R <: RequestHeader](request: ApiRequestHeader[R], status: Int, json: JsValue): Future[Long] = Future.successful {
     val id: Option[Long] = DB.withConnection { implicit c =>
-      SQL("INSERT INTO apilogs(dateinsert,ip,apikey,token,method,uri,requestbody,responsestatus,responsebody) VALUES ({dateinsert},{ip},{apikey},{token},{method},{uri},{requestbody},{responsestatus},{responsebody})").on('dateinsert -> request.dateOrNow.toDate, 'ip -> request.remoteAddress, 'apikey -> request.apiKeyOpt, 'token -> request.tokenOpt, 'method -> request.method, 'uri -> request.uri, 'requestbody -> request.maybeBody, 'responsestatus -> status, 'responsebody -> (if (json == JsNull) None else Some(Json.prettyPrint(json)))).executeInsert()
+      SQL("INSERT INTO apilogs(dateinsert,ip,apikey,token,method,uri,requestbody,responsestatus,responsebody) VALUES ({dateinsert},{ip},{apikey},{token},{method},{uri},{requestbody},{responsestatus},{responsebody})").on('dateinsert -> request.dateOrNow, 'ip -> request.remoteAddress, 'apikey -> request.apiKeyOpt, 'token -> request.tokenOpt, 'method -> request.method, 'uri -> request.uri, 'requestbody -> request.maybeBody, 'responsestatus -> status, 'responsebody -> (if (json == JsNull) None else Some(Json.prettyPrint(json)))).executeInsert()
     }
     id.get
   }

@@ -5,10 +5,14 @@ import api.ApiError._
 import api.JsonCombinators._
 import models.SKey
 import play.api.mvc._
+
 import scala.concurrent.Future
 import scala.concurrent.ExecutionContext.Implicits.global
 import javax.inject.Inject
-import play.api.i18n.{ MessagesApi }
+
+import org.joda.time.DateTime
+import play.api.i18n.MessagesApi
+import play.api.libs.json._
 
 /**
  * Created by gejun on 4/5/16.
@@ -43,6 +47,14 @@ class KeyController @Inject() (val messagesApi: MessagesApi) extends api.ApiCont
 
   def list = UserAwareApiAction { implicit request =>
     SKey.list.flatMap { result => ok(result) }
+  }
+
+  def getLatest = UserAwareApiAction { implicit request =>
+    maybeItem(SKey.getTop)
+  }
+
+  def getHistory(time: Long) = UserAwareApiAction { implicit request =>
+    maybeItem(SKey.getKey(new DateTime(time)))
   }
 
 }

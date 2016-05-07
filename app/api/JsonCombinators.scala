@@ -57,6 +57,7 @@ object JsonCombinators {
       "insertTime" -> s.inserttime
     )
   }
+
   implicit val skeyReads: Reads[SKey] =
     (__ \ "key").read[String](minLength[String](1)).map(key => SKey(0L, Encryption.encrypt(Encryption.ENCRIPTION_KEY, key), new DateTime()))
 }

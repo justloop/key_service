@@ -7,7 +7,7 @@ import api.JsonCombinators._
 import play.api.mvc._
 
 import scala.concurrent.Future
-import models.{ ApiToken, User }
+import models.{ ApiToken, Encryption, User }
 import play.api.i18n.MessagesApi
 import play.api.libs.functional.syntax._
 import play.api.libs.json._
@@ -38,19 +38,17 @@ class Account @Inject() (val messagesApi: MessagesApi) extends api.ApiController
       case (oldPwd, newPwd) =>
         User.findById(request.userId).flatMap {
           case None => errorUserNotFound
-          case Some(user) if (oldPwd != user.password) => errorCustom("api.error.reset.pwd.old.incorrect")
-          case Some(user) => User.updatePassword(request.userId, newPwd).flatMap { failed =>
+          case Some(user) if (Encryption.encrypt(Encryption.ENCRIPTION_KEY, oldPwd) != user.password) => errorCustom("api.error.reset.pwd.old.incorrect")
+          case Some(user) => User.updatePassword(request.userId, Encryption.encrypt(Encryption.ENCRIPTION_KEY, newPwd)).flatMap { failed =>
             if (!failed) noContent() else errorInternal
           }
         }
     }
   }
 
-  def delete = SecuredApiAction { implicit request =>
-    ApiToken.delete(request.token).flatMap { _ =>
-      User.delete(request.userId).flatMap { _ =>
-        noContent()
-      }
+  def delete(id: Long) = SecuredApiAction { implicit request =>
+    User.delete(id).flatMap { _ =>
+      noContent()
     }
   }
 

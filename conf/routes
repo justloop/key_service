@@ -15,7 +15,7 @@ GET         /account/list               controllers.Account.list
 GET			/account					controllers.Account.info
 PUT			/account					controllers.Account.update
 PUT			/account/password		    controllers.Account.updatePassword
-DELETE	    /account					controllers.Account.delete
+DELETE	    /account/:id				controllers.Account.delete(id: Long)
 
 # TOKEN
 GET         /token                      controllers.TokenManage.listToken
@@ -26,6 +26,8 @@ DELETE      /token                      controllers.TokenManage.deleteToken
 # KEY
 GET         /key                        controllers.KeyController.list
 GET		    /key/:id				    controllers.KeyController.info(id: Long)
+GET         /latestkey                  controllers.KeyController.getLatest
+GET         /historykey/:time           controllers.KeyController.getHistory(time: Long)
 POST	    /key/:id					controllers.KeyController.update(id: Long)
 PUT		    /key				        controllers.KeyController.insert
 DELETE	    /key/:id				    controllers.KeyController.delete(id: Long)

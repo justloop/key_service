@@ -3,7 +3,7 @@ package models
 import java.util.UUID
 
 import org.joda.time.DateTime
-
+import anorm.JodaParameterMetaData._
 import scala.concurrent.Future
 
 /*
@@ -47,7 +47,7 @@ object ApiToken {
     }
 
     DB.withConnection { implicit c =>
-      SQL("INSERT INTO apitokens(token,apikey,expirationtime,userid) VALUES ({token},{apikey},{expirationtime},{userid})").on("token" -> token, 'apikey -> apikey, 'expirationtime -> ((new DateTime()) plusDays 1).toDate, 'userid -> userid).executeInsert()
+      SQL("INSERT INTO apitokens(token,apikey,expirationtime,userid) VALUES ({token},{apikey},{expirationtime},{userid})").on("token" -> token, 'apikey -> apikey, 'expirationtime -> ((new DateTime()) plusMinutes 10), 'userid -> userid).executeInsert()
     }
     token
   }
@@ -67,7 +67,7 @@ object ApiToken {
       SQL("DELETE FROM apitokens WHERE apikey = {apikey}").on("apikey" -> apikey).executeUpdate()
     }
     DB.withConnection { implicit c =>
-      SQL("INSERT INTO apitokens(token,apikey,expirationtime,userid) VALUES ({token},{apikey},{expirationtime},{userid})").on("token" -> token, 'apikey -> apikey, 'expirationtime -> ((new DateTime()) plusYears 100).toDate, 'userid -> 0L).executeInsert()
+      SQL("INSERT INTO apitokens(token,apikey,expirationtime,userid) VALUES ({token},{apikey},{expirationtime},{userid})").on("token" -> token, 'apikey -> apikey, 'expirationtime -> ((new DateTime()) plusYears 100), 'userid -> 0L).executeInsert()
     }
     token
   }
