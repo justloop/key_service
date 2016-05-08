@@ -1,12 +1,46 @@
 Smarthub Key Service
 
--- on Play and H2
+-- on Play + Anorm + H2
 
 There are two kinds of api users:
 -- Admin users (Master control, need to login through signin entry point, token expire in 10 min)
 -- Normal API client (can only access key related readable APIs, token expire in 10 years)
 
-#Normal Client API
+************************************************************************************************************************
+
+                                                        Deployment
+
+************************************************************************************************************************
+
+-- Package generation
+Configure the encription key and salt under app/models/Encryption, to avoid anyone able to hack into database
+
+User activator, go to home folder and do
+./activator universal:package-bin
+then you will find the package under
+/target/universal/key_service-1.0.zip
+
+upload the zip file to the server and unzip to the folder you would like to place.
+
+-- Configuration
+configure file is under conf folder, you need to configure the location to store the db files under application.conf
+b.default.url="jdbc:h2:file:{location of db file}"
+configuration of log file is logback.xml
+
+-- Run
+go to bin folder under the unzipped folder, if http.port not specified, 9000 is the default
+./key_service -Dhttp.port={port}
+open browser to reach the root location of the website, website will prompt to create database for the first time.
+click on execute the script, then you are ready to go
+
+
+
+************************************************************************************************************************
+
+                                                        Admin API
+
+************************************************************************************************************************
+
 
 ####################################################################################################
                                                 Login
