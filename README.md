@@ -16,7 +16,10 @@ There are two kinds of api users:
 Configure the encription key and salt under app/models/Encryption, to avoid anyone able to hack into database
 
 User activator, go to home folder and do
+Unix: 
 ./activator universal:package-bin
+Windows:
+activator.bat universal:package-bin
 then you will find the package under
 /target/universal/key_service-1.0.zip
 
