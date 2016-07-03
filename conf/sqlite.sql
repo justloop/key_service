@@ -44,7 +44,7 @@ CREATE TABLE users (
   active BOOLEAN NOT NULL
 );
 
-INSERT INTO users (email,password,name,emailconfirmed,active) VALUES ('xxxx@xxxx.com', 'VL7Wu49+6q6kqKhC+f8c+Q==', 'SmarthubOps', 1, 1);
+INSERT INTO users (email,password,name,emailconfirmed,active) VALUES ('xxxx@xxxx.com', 'VL7Wu49+6q6kqKhC+f8c+Q==', 'XXX', 1, 1);
 INSERT INTO apikeys (apikey,name,active) VALUES ('XXX','XXX',1);
 
 
