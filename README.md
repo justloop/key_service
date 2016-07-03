@@ -1,4 +1,6 @@
-Encrypted Key Service
+#Encrypted Key Service
+
+## Thanks to Scala REST API seed project: https://github.com/adrianhurt/play-api-rest-seed
 
 -- on Play + Anorm + H2
 
